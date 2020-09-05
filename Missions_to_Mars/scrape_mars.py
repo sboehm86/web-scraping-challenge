@@ -32,7 +32,9 @@ def mars_scrape_news():
         mars_data['news_body']=body
         
         return mars_data
+    finally:
         browser.quit()
+        
         
 #FEATURED IMAGE
 def mars_scrape_image():
@@ -58,8 +60,9 @@ def mars_scrape_image():
         mars_data['feat_img_link']=feat_img_link
         
         return mars_data
-    
+    finally:
         browser.quit()
+        
         
 #MARS WEATHER
 def mars_scrape_faq():
@@ -73,8 +76,9 @@ def mars_scrape_faq():
         mars1.rename(columns={"0":"Description", "1": "Mars"})
         
         return mars1.to_html(classes="table table striped")
-    
+    finally:
         browser.quit()
+        
         
 #MARS HEMISPHERES
 def mars_scrape_hemi():
@@ -91,22 +95,22 @@ def mars_scrape_hemi():
         
         hemi_main = 'https://astrogeology.usgs.gov'
 
-    for i in items: 
-        title = i.find('h3').text
+        for i in items: 
+            title = i.find('h3').text
     
-        partial_img_url = i.find('a', class_='itemLink product-item')['href']
+            partial_img_url = i.find('a', class_='itemLink product-item')['href']
     
-        browser.visit(hemi_main + partial_img_url)
+            browser.visit(hemi_main + partial_img_url)
     
-        partial_img_html = browser.html
+            partial_img_html = browser.html
      
-        soup = bs( partial_img_html, 'html.parser')
+            soup = bs( partial_img_html, 'html.parser')
     
-        img_url = hemi_main + soup.find('img', class_='wide-image')['src'] 
+            img_url = hemi_main + soup.find('img', class_='wide-image')['src'] 
         
-        hemisphere_image_urls.append({"title" : title, "img_url" : img_url})
+            hemisphere_image_urls.append({"title" : title, "img_url" : img_url})
     
-    mars_data['hemi_main']=hemi_main
-    return mars_data
-   
-    browser.quit()
+        mars_data['hemi_main']=hemi_main
+        return mars_data
+    finally:   
+        browser.quit()
